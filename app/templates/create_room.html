@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Create Room | WhoISPy?{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/create-room.css') }}" />
+{% endblock %}
+
+{% block content %}
+  <main class="create-page">
+    <section class="create-card">
+      <a class="back-link" href="/" aria-label="Back to entry page">Back</a>
+      <h1 class="create-title">Create room</h1>
+      <form class="create-form" action="/room/create" method="post">
+        <label class="field">
+          <span class="field-label">Room Label</span>
+          <input
+            class="field-input"
+            type="text"
+            name="room_label"
+            placeholder="Label"
+            maxlength="64"
+            required
+          />
+        </label>
+
+        <div class="field field-switch">
+          <div class="switch-copy">
+            <span class="field-label">Room Access</span>
+            <span class="field-hint" id="room-access-hint">Open room</span>
+          </div>
+          <label class="switch" aria-label="Toggle closed room">
+            <input type="checkbox" id="room-closed-toggle" name="is_closed" />
+            <span class="slider"></span>
+          </label>
+          <input type="hidden" name="room_access" id="room-access" value="open" />
+        </div>
+
+        <label class="field" id="password-field" hidden>
+          <span class="field-label">Room Password</span>
+          <input
+            class="field-input"
+            type="text"
+            name="room_password"
+            placeholder="Enter password"
+            maxlength="8"
+            autocomplete="new-password"
+          />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Max Players</span>
+          <input
+            class="field-input"
+            type="number"
+            name="max_players"
+            min="1"
+            max="32"
+            step="1"
+            value="8"
+            inputmode="numeric"
+            required
+          />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Max Spies</span>
+          <input
+            class="field-input"
+            type="number"
+            name="max_spies"
+            min="1"
+            max="4"
+            step="1"
+            value="1"
+            inputmode="numeric"
+            required
+          />
+        </label>
+
+        <button class="submit-btn" type="submit">Create</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const closedToggle = document.getElementById("room-closed-toggle");
+      const passwordField = document.getElementById("password-field");
+      const passwordInput = passwordField?.querySelector("input[name='room_password']");
+      const roomAccessInput = document.getElementById("room-access");
+      const accessHint = document.getElementById("room-access-hint");
+
+      const setAccess = () => {
+        const isClosed = closedToggle?.checked === true;
+        if (passwordField) {
+          passwordField.hidden = !isClosed;
+          passwordField.style.display = isClosed ? "" : "none";
+        }
+        if (passwordInput) {
+          passwordInput.required = isClosed;
+          if (!isClosed) passwordInput.value = "";
+        }
+        if (roomAccessInput) {
+          roomAccessInput.value = isClosed ? "closed" : "open";
+        }
+        if (accessHint) {
+          accessHint.textContent = isClosed ? "Closed room" : "Open room";
+        }
+      };
+
+      const normalizeInt = (input) => {
+        const digits = String(input.value).replace(/[^\d]/g, "");
+        if (!digits) {
+          input.value = "";
+          return;
+        }
+        const min = Number(input.min || "1");
+        const max = Number(input.max || "999999");
+        const parsed = Number.parseInt(digits, 10);
+        const clamped = Math.min(Math.max(parsed, min), max);
+        input.value = String(clamped);
+      };
+
+      if (closedToggle) {
+        closedToggle.addEventListener("change", setAccess);
+        setAccess();
+      }
+
+      const integerInputs = document.querySelectorAll("input[type='number']");
+      for (const input of integerInputs) {
+        input.addEventListener("input", () => normalizeInt(input));
+        input.addEventListener("blur", () => {
+          if (!input.value) {
+            input.value = input.getAttribute("value") || input.min || "1";
+          }
+          normalizeInt(input);
+        });
+      }
+    })();
+  </script>
+{% endblock %}
