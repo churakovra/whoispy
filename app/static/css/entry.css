@@ -9,11 +9,7 @@
 
 .entry-card {
   width: min(480px, 100%);
-  background-color: color-mix(in srgb, var(--card) 92%, #000000 8%);
-  border: 1px solid rgba(255, 127, 138, 0.24);
-  border-radius: 1.25rem;
   padding: 2.25rem;
-  box-shadow: var(--shadow);
   text-align: center;
 }
 

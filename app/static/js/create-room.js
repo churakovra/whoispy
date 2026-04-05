@@ -1,6 +1,7 @@
 "use strict";
 // Handle room access toggle and password field visibility
 (() => {
+    const form = document.querySelector(".create-form");
     const closedToggle = document.getElementById("room-closed-toggle");
     const passwordField = document.getElementById("password-field");
     const passwordInput = passwordField?.querySelector("input[name='room_password']");
@@ -19,7 +20,7 @@
                 passwordInput.value = "";
         }
         if (roomAccessInput) {
-            roomAccessInput.value = isClosed ? "closed" : "open";
+            roomAccessInput.value = isClosed ? "true" : "false";
         }
         if (accessHint) {
             accessHint.textContent = isClosed ? "Closed room" : "Open room";
@@ -54,4 +55,10 @@
             normalizeInt(input);
         });
     });
+    if (form && passwordInput) {
+        form.addEventListener("submit", () => {
+            const trimmed = passwordInput.value.trim();
+            passwordInput.value = trimmed;
+        });
+    }
 })();

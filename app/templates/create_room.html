@@ -20,6 +20,7 @@
             name="room_label"
             placeholder="Label"
             maxlength="64"
+            autocomplete="off"
             required
           />
         </label>
@@ -30,10 +31,10 @@
             <span class="field-hint" id="room-access-hint">Open room</span>
           </div>
           <label class="switch" aria-label="Toggle closed room">
-            <input type="checkbox" id="room-closed-toggle" name="is_closed" />
+            <input type="checkbox" id="room-closed-toggle" />
             <span class="slider"></span>
           </label>
-          <input type="hidden" name="room_access" id="room-access" value="open" />
+          <input type="hidden" name="is_closed" id="room-access" value="false" />
         </div>
 
         <label class="field" id="password-field" hidden>
@@ -44,7 +45,7 @@
             name="room_password"
             placeholder="Enter password"
             maxlength="8"
-            autocomplete="new-password"
+            autocomplete="off"
           />
         </label>
 
