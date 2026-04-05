@@ -1,0 +1,12 @@
+{
+  "name": "whoispy-frontend",
+  "version": "1.0.0",
+  "description": "Frontend build scripts for WhoISPy",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

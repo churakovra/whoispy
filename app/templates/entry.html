@@ -2,6 +2,10 @@
 
 {% block title %}WhoISPy?{% endblock %}
 
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/entry.css') }}" />
+{% endblock %}
+
 {% block content %}
   <main class="entry-page">
     <section class="entry-card">
@@ -15,25 +19,5 @@
       </div>
     </section>
   </main>
-  <script>
-    (() => {
-      const letter = document.getElementById("glitch-s");
-      if (!letter) return;
-
-      const trigger = () => {
-        letter.classList.add("is-glitching");
-        window.setTimeout(() => {
-          letter.classList.remove("is-glitching");
-          schedule();
-        }, 360);
-      };
-
-      const schedule = () => {
-        const delay = 2000 + Math.floor(Math.random() * 3001);
-        window.setTimeout(trigger, delay);
-      };
-
-      schedule();
-    })();
-  </script>
+  <script src="{{ url_for('static', path='/js/entry.js') }}"></script>
 {% endblock %}

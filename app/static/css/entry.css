@@ -1,35 +1,4 @@
-:root {
-  --bg-main: #171a1f;
-  --bg-alt: #1f232b;
-  --card: #20242d;
-  --text: #f8f9fb;
-  --muted: #b9bec9;
-  --tone-whois: #d7dbe3;
-  --tone-spy: #ff7f8a;
-  --tone-s-alt: #f0f2f6;
-  --create: #ff6b78;
-  --create-hover: #ff5566;
-  --join: #313844;
-  --join-hover: #3a4351;
-  --shadow: 0 22px 54px rgba(0, 0, 0, 0.45);
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: "Sora", "Segoe UI", sans-serif;
-  background:
-    radial-gradient(circle at 10% 18%, rgba(255, 107, 120, 0.18) 0%, transparent 44%),
-    radial-gradient(circle at 86% 82%, rgba(255, 127, 138, 0.12) 0%, transparent 48%),
-    linear-gradient(140deg, var(--bg-main), var(--bg-alt));
-  color: var(--text);
-}
+/* Entry page specific styles */
 
 .entry-page {
   min-height: 100vh;
@@ -144,27 +113,6 @@ body {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 0.8rem;
-}
-
-.btn {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 2.8rem;
-  border-radius: 0.75rem;
-  text-decoration: none;
-  color: #ffffff;
-  font-weight: 600;
-  transition: transform 0.18s ease, filter 0.18s ease;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.04);
-}
-
-.btn:active {
-  transform: translateY(0);
 }
 
 .btn-create {

@@ -1,32 +1,4 @@
-:root {
-  --bg-main: #171a1f;
-  --bg-alt: #1f232b;
-  --card: #20242d;
-  --text: #f8f9fb;
-  --muted: #b9bec9;
-  --accent: #ff7f8a;
-  --accent-strong: #ff5566;
-  --surface: #2a303b;
-  --surface-border: #3a4250;
-  --shadow: 0 22px 54px rgba(0, 0, 0, 0.45);
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: "Sora", "Segoe UI", sans-serif;
-  background:
-    radial-gradient(circle at 10% 18%, rgba(255, 107, 120, 0.18) 0%, transparent 44%),
-    radial-gradient(circle at 86% 82%, rgba(255, 127, 138, 0.12) 0%, transparent 48%),
-    linear-gradient(140deg, var(--bg-main), var(--bg-alt));
-  color: var(--text);
-}
+/* Create room page specific styles */
 
 .create-page {
   min-height: 100vh;
