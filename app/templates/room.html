@@ -3,7 +3,7 @@
 {% block title %}Room {{ room_id }} | WhoISPy?{% endblock %}
 
 {% block styles %}
-  <link rel="stylesheet" href="{{ url_for('static', path='/css/room.css') }}?v={{ room_id }}" />
+  <link rel="stylesheet" href="{{ url_for('static', path='css/room.css') }}?v={{ room_id }}" />
 {% endblock %}
 
 {% block content %}
@@ -20,5 +20,5 @@
     </section>
   </main>
 
-  <script src="{{ url_for('static', path='/js/room.js') }}?v={{ room_id }}"></script>
+  <script src="{{ url_for('static', path='js/room.js') }}?v={{ room_id }}"></script>
 {% endblock %}
