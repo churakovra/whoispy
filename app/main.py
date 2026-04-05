@@ -1,14 +1,7 @@
-import asyncio
-
 from fastapi import FastAPI
-from handlers import routers
+from app.handlers import routers
 
+app = FastAPI()
 
-async def main():
-    app = FastAPI()
-    for router in routers:
-        app.include_router(router)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+for router in routers:
+    app.include_router(router)
