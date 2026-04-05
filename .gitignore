@@ -15,9 +15,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Generated JavaScript files (compiled from TypeScript)
-app/static/js/*.js
-
 # Environment files
 .env
 
