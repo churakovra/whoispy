@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}WhoISPy?{% endblock %}
+
+{% block content %}
+  <main class="entry-page">
+    <section class="entry-card">
+      <h1 class="entry-title" aria-label="Whoispy?">
+        <span class="title-whois">Whoi</span><span class="title-s" id="glitch-s">s</span><span class="title-spy">py?</span>
+      </h1>
+      <p class="entry-subtitle">Pick how you want to start</p>
+      <div class="entry-actions">
+        <a class="btn btn-create" href="/room/create">Create</a>
+        <a class="btn btn-join" href="/room/join">Join</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    (() => {
+      const letter = document.getElementById("glitch-s");
+      if (!letter) return;
+
+      const trigger = () => {
+        letter.classList.add("is-glitching");
+        window.setTimeout(() => {
+          letter.classList.remove("is-glitching");
+          schedule();
+        }, 360);
+      };
+
+      const schedule = () => {
+        const delay = 2000 + Math.floor(Math.random() * 3001);
+        window.setTimeout(trigger, delay);
+      };
+
+      schedule();
+    })();
+  </script>
+{% endblock %}
