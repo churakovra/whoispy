@@ -37,6 +37,7 @@ body {
 
 .entry-card,
 .create-card,
+.join-card,
 .room-card {
   background-color: color-mix(in srgb, var(--card) 92%, #000000 8%);
   border: 1px solid rgba(255, 127, 138, 0.24);

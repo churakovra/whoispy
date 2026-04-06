@@ -10,6 +10,15 @@ class CreateRoomForm(BaseModel):
     max_spies: int
 
 
+class EnterRoomForm(BaseModel):
+    room_id: str
+    room_password: str | None = Field(default=None)
+
+
+class ValidateRoomRequest(BaseModel):
+    room_password: str
+
+
 class Room(BaseModel):
     label: str
     is_closed: bool

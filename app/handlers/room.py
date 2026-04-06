@@ -1,12 +1,12 @@
 from typing import Annotated
 from fastapi import APIRouter, Form, Request, WebSocket
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 import logging
 import json
 from uuid import uuid4
 
-from app.schemas.room import CreateRoomForm, Room
+from app.schemas.room import CreateRoomForm, EnterRoomForm, Room, ValidateRoomRequest
 from app.schemas.user import User
 
 
@@ -15,6 +15,7 @@ templates = Jinja2Templates(directory="app/templates")
 logger = logging.getLogger(__name__)
 
 # In-memory storage for rooms and WebSocket connections
+# Add pg or redis storage instead of In-memory.
 rooms: dict[str, Room] = {}
 room_connections: dict[str, dict[str, WebSocket]] = {}  # room_id -> {user_id: ws}
 
@@ -40,6 +41,32 @@ async def create_room(data: Annotated[CreateRoomForm, Form()]):
     return RedirectResponse(url=f"/room/{new_room_id}", status_code=303)
 
 
+@router.get("/room/join", response_class=HTMLResponse)
+async def get_join_room_page(request: Request):
+    return templates.TemplateResponse(
+        request=request, name="join_room.html", context={}
+    )
+
+
+@router.get("/room/{room_id}/status", response_class=JSONResponse)
+async def get_room_status(request: Request, room_id: str):
+    if room_id not in rooms:
+        return templates.TemplateResponse(
+            request=request, name="404.html", context={}, status_code=404
+        )
+    return rooms[room_id].model_dump(include={"is_closed"})
+
+
+@router.post("/room/{room_id}/validate", response_class=JSONResponse)
+async def validate_room(data: ValidateRoomRequest, request: Request, room_id: str):
+    if room_id not in rooms:
+        return templates.TemplateResponse(
+            request=request, name="404.html", context={}, status_code=404
+        )
+    room = rooms[room_id]
+    return {"is_valid": data.room_password == room.password}
+
+
 @router.get("/room/{room_id}", response_class=HTMLResponse)
 async def get_room_page(request: Request, room_id: str):
     if room_id not in rooms:
@@ -52,6 +79,15 @@ async def get_room_page(request: Request, room_id: str):
         name="room.html",
         context={"room_id": room_id, "room_label": room_data.label},
     )
+
+
+@router.post("/room/{room_id}", response_class=RedirectResponse)
+async def try_to_join_room(data: Annotated[EnterRoomForm, Form()], room_id: str):
+    redirect = RedirectResponse(url=f"/room/{room_id}", status_code=303)
+    room = rooms[room_id]
+    if data.room_password != room.password:
+        redirect = RedirectResponse(url="/room/join", status_code=303)
+    return redirect
 
 
 @router.websocket("/ws/room/{room_id}")
