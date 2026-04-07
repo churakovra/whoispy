@@ -74,10 +74,16 @@ async def get_room_page(request: Request, room_id: str):
             request=request, name="404.html", context={}, status_code=404
         )
     room_data = rooms[room_id]
+    # Generate a temporary user ID for the template context
+    # The actual user ID will be generated when WebSocket connects
     return templates.TemplateResponse(
         request=request,
         name="room.html",
-        context={"room_id": room_id, "room_label": room_data.label},
+        context={
+            "room_id": room_id,
+            "room_label": room_data.label,
+            "host_user_id": room_data.host_user_id,
+        },
     )
 
 
@@ -102,8 +108,15 @@ async def room_websocket(websocket: WebSocket, room_id: str):
     rooms[room_id].users[user_id] = User(name=user_name)
     room_connections.setdefault(room_id, {})[user_id] = websocket
 
-    # Send initial users list
-    await send_users_list(room_id)
+    # Set host if this is the first user
+    if len(rooms[room_id].users) == 1:
+        rooms[room_id].host_user_id = user_id
+
+    # Send current user ID to the newly connected user
+    await websocket.send_text(json.dumps({"user_id": user_id, "host_user_id": rooms[room_id].host_user_id}))
+
+    # Send initial users list to all users in the room
+    await send_users_list_to_all(room_id)
 
     try:
         while True:
@@ -112,7 +125,7 @@ async def room_websocket(websocket: WebSocket, room_id: str):
             if message.get("action") == "set_ready":
                 user = rooms[room_id].users[user_id]
                 user.ready = message["ready"]
-                await send_users_list(room_id)
+                await send_users_list_to_all(room_id)
     except Exception as e:
         logger.error(f"WebSocket error: {e}")
     finally:
@@ -121,17 +134,20 @@ async def room_websocket(websocket: WebSocket, room_id: str):
             del rooms[room_id].users[user_id]
         if room_id in room_connections and user_id in room_connections[room_id]:
             del room_connections[room_id][user_id]
-        await send_users_list(room_id)
+        await send_users_list_to_all(room_id)
 
 
-async def send_users_list(room_id: str):
+async def send_users_list_to_all(room_id: str):
     if room_id not in rooms:
         return
     users = [
         {"id": uid, "name": user.name, "ready": user.ready}
         for uid, user in rooms[room_id].users.items()
     ]
-    message = json.dumps({"users": users})
+    message = json.dumps({
+        "users": users,
+        "host_user_id": rooms[room_id].host_user_id,
+    })
     for ws in room_connections.get(room_id, {}).values():
         try:
             await ws.send_text(message)

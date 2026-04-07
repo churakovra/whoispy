@@ -26,3 +26,4 @@ class Room(BaseModel):
     max_players: int
     max_spies: int
     users: dict[str, User] = Field(default_factory=dict)
+    host_user_id: str | None = Field(default=None)

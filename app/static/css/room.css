@@ -57,6 +57,14 @@
   font-weight: 600;
 }
 
+.user-host-indicator {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .user-state {
   font-size: 0.9rem;
   color: var(--muted);
@@ -112,6 +120,52 @@
   outline: none;
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+#start-game-button {
+  width: 100%;
+  margin-top: 1rem;
+  min-height: 2.85rem;
+  border: 1px solid rgba(93, 197, 123, 0.35);
+  border-radius: 0.75rem;
+  background:
+    linear-gradient(180deg, rgba(93, 197, 123, 0.15), rgba(93, 197, 123, 0.08)),
+    var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(93, 197, 123, 0.2);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    filter 180ms ease;
+}
+
+#start-game-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(93, 197, 123, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(93, 197, 123, 0.25),
+    0 14px 30px rgba(0, 0, 0, 0.18);
+  filter: brightness(1.05);
+}
+
+#start-game-button:active {
+  transform: translateY(0);
+}
+
+#start-game-button:focus-visible {
+  outline: none;
+  border-color: rgba(93, 197, 123, 0.6);
+  box-shadow: 0 0 0 3px rgba(93, 197, 123, 0.15);
+}
+
+.hidden {
+  display: none;
 }
 
 @media (max-width: 520px) {

@@ -6,6 +6,7 @@
     const emptyState = document.getElementById("empty-state");
     const statusText = document.getElementById("room-connection-status");
     const readyButton = document.getElementById("ready-button");
+    const startGameButton = document.getElementById("start-game-button");
     if (!roomCard || !usersList || !emptyState || !statusText) {
         return;
     }
@@ -16,11 +17,31 @@
     }
     const usersMap = new Map();
     let isCurrentUserReady = false;
+    let currentUserId = null;
+    let hostUserId = roomCard.dataset.hostUserId || null;
     const renderReadyButton = () => {
         if (!readyButton) {
             return;
         }
         readyButton.textContent = isCurrentUserReady ? "Not Ready" : "Ready";
+    };
+    const renderStartGameButton = () => {
+        if (!startGameButton || !currentUserId || !hostUserId) {
+            return;
+        }
+        // Only show Start Game button for host
+        if (currentUserId !== hostUserId) {
+            startGameButton.classList.add("hidden");
+            return;
+        }
+        // Check if all players are ready
+        const users = Array.from(usersMap.values());
+        const allReady = users.length > 0 && users.every(user => user.ready);
+        if (allReady) {
+            startGameButton.classList.remove("hidden");
+        } else {
+            startGameButton.classList.add("hidden");
+        }
     };
     const renderUsers = () => {
         usersList.innerHTML = "";
@@ -31,6 +52,13 @@
             const name = document.createElement("span");
             name.className = "user-name";
             name.textContent = user.name;
+            // Show host indicator for the host user
+            if (user.id === hostUserId) {
+                const hostIndicator = document.createElement("span");
+                hostIndicator.className = "user-host-indicator";
+                hostIndicator.textContent = "Host";
+                row.appendChild(hostIndicator);
+            }
             const state = document.createElement("span");
             state.className = "user-state";
             state.textContent = user.ready ? "Ready" : "Not ready";
@@ -39,6 +67,7 @@
             usersList.appendChild(row);
         });
         emptyState.classList.toggle("hidden", users.length > 0);
+        renderStartGameButton();
     };
     const setUsers = (users) => {
         usersMap.clear();
@@ -92,6 +121,16 @@
             catch (_a) {
                 return;
             }
+            // Update current user ID if provided
+            if (payload?.user_id) {
+                currentUserId = payload.user_id;
+                renderStartGameButton();
+            }
+            // Update host user ID if provided
+            if (payload?.host_user_id) {
+                hostUserId = payload.host_user_id;
+                renderStartGameButton();
+            }
             if (Array.isArray(payload?.users)) {
                 setUsers(payload.users);
                 return;
@@ -109,6 +148,12 @@
                 isCurrentUserReady = !isCurrentUserReady;
                 socket.send(JSON.stringify({ action: "set_ready", ready: isCurrentUserReady }));
                 renderReadyButton();
+            });
+        }
+        if (startGameButton) {
+            startGameButton.addEventListener("click", () => {
+                // Send start game action to server
+                socket.send(JSON.stringify({ action: "start_game" }));
             });
         }
     }

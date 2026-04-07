@@ -8,7 +8,7 @@
 
 {% block content %}
   <main class="room-page">
-    <section class="room-card" data-room-id="{{ room_id }}">
+    <section class="room-card" data-room-id="{{ room_id }}" data-host-user-id="{{ host_user_id }}">
       <a class="back-link" href="/" aria-label="Back to entry page">Back</a>
       <h1 class="room-title"><span id="room-name">{{ room_label }}</span></h1>
       <p class="room-subtitle" id="room-connection-status">Connecting...</p>
@@ -17,6 +17,7 @@
       <p class="empty-state" id="empty-state">No users connected yet</p>
       
       <button id="ready-button" type="button">Ready</button>
+      <button id="start-game-button" type="button" class="hidden">Start Game</button>
     </section>
   </main>
 
