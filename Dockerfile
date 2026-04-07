@@ -1,4 +1,4 @@
-FROM python:3.13-slim as builder
+FROM python:3.13-slim AS builder
 
 WORKDIR /src
 
@@ -9,8 +9,8 @@ RUN uv sync
 
 COPY ./app ./app
 
-FROM builder as app
+FROM builder AS app
 
 EXPOSE 8000
 
-CMD uv run fastapi dev
+CMD ["uv", "run", "fastapi", "dev"]
