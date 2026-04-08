@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Room {{ room_id }} | Who'Spy?{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', path='css/room.css') }}?v={{ room_id }}" />
+{% endblock %}
+
+{% block content %}
+  <main class="room-page">
+    <section class="room-card" data-room-id="{{ room_id }}" data-host-user-id="{{ host_user_id }}">
+      <a class="back-link" href="/" aria-label="Back to entry page">Back</a>
+      <h1 class="room-title"><span id="room-name">{{ room_label }}</span></h1>
+      <p class="room-subtitle" id="room-connection-status">Connecting...</p>
+
+      <ul class="users-list" id="users-list" aria-live="polite"></ul>
+      <p class="empty-state" id="empty-state">No users connected yet</p>
+      
+      <button id="ready-button" type="button">Ready</button>
+      <button id="start-game-button" type="button" class="hidden">Start Game</button>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', path='js/room.js') }}?v={{ room_id }}"></script>
+{% endblock %}

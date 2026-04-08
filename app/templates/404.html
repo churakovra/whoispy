@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found | Who'Spy?{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', path='css/404.css') }}" />
+{% endblock %}
+
+{% block content %}
+  <main class="not-found-page">
+    <section class="not-found-card">
+      <p class="not-found-code">404</p>
+      <h1 class="not-found-title">This room slipped into the shadows</h1>
+      <p class="not-found-copy">
+        The page you asked for does not exist anymore, or it was never here to begin with.
+      </p>
+      <div class="not-found-actions">
+        <a class="btn not-found-primary" href="/">Back Home</a>
+      </div>
+    </section>
+  </main>
+{% endblock %}

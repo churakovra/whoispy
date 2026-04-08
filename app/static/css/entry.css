@@ -1,0 +1,139 @@
+/* Entry page specific styles */
+
+.entry-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.entry-card {
+  width: min(480px, 100%);
+  padding: 2.25rem;
+  text-align: center;
+}
+
+.entry-title {
+  margin: 0 0 0.35rem;
+  font-size: clamp(2.1rem, 5vw, 2.9rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.title-whois {
+  color: var(--tone-whois);
+}
+
+.title-spy {
+  color: var(--tone-spy);
+}
+
+.title-s {
+  display: inline-block;
+  position: relative;
+  color: var(--tone-whois);
+  text-transform: lowercase;
+  transition: color 160ms ease, text-transform 160ms ease;
+}
+
+.entry-title:hover .title-s {
+  color: var(--tone-spy);
+  text-transform: uppercase;
+}
+
+.title-s.is-glitching {
+  animation: s-glitch 360ms steps(2, end);
+  color: var(--tone-spy);
+  text-transform: uppercase;
+}
+
+.title-s.is-glitching::before,
+.title-s.is-glitching::after {
+  content: "S";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.title-s.is-glitching::before {
+  color: #ff3a4c;
+  transform: translate(-2px, -1px);
+  opacity: 0.9;
+}
+
+.title-s.is-glitching::after {
+  color: #ffffff;
+  transform: translate(2px, 1px);
+  opacity: 0.75;
+}
+
+@keyframes s-glitch {
+  0% {
+    transform: translate(0, 0) skew(0deg);
+    color: var(--tone-whois);
+    text-shadow: 0 0 0 transparent;
+  }
+
+  20% {
+    transform: translate(1px, -1px) skew(-8deg);
+    color: var(--tone-s-alt);
+    text-shadow: -2px 0 #ff3a4c;
+  }
+
+  45% {
+    transform: translate(-2px, 1px) skew(6deg);
+    text-shadow: 2px 0 #ffffff;
+  }
+
+  72% {
+    transform: translate(1px, 0) skew(-4deg);
+    color: #ff5d69;
+    text-shadow: -1px 0 #ffffff, 1px 0 #ff3a4c;
+  }
+
+  100% {
+    transform: translate(0, 0) skew(0deg);
+    color: var(--tone-spy);
+    text-shadow: 0 0 0 transparent;
+  }
+}
+
+.entry-subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.entry-actions {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.btn-create {
+  background-color: var(--create);
+}
+
+.btn-create:hover {
+  background-color: var(--create-hover);
+}
+
+.btn-join {
+  background-color: var(--join);
+  border: 1px solid rgba(255, 127, 138, 0.2);
+}
+
+.btn-join:hover {
+  background-color: var(--join-hover);
+}
+
+@media (max-width: 460px) {
+  .entry-card {
+    padding: 1.6rem;
+  }
+
+  .entry-actions {
+    grid-template-columns: 1fr;
+  }
+}

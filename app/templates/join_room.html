@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Join Room | Who'Spy?{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', path='css/join-room.css') }}" />
+{% endblock %}
+
+{% block content %}
+  <main class="join-page">
+    <section class="join-card">
+      <a class="back-link" href="/" aria-label="Back to entry page">Back</a>
+      <h1 class="join-title">Join room</h1>
+      <form class="join-form" method="post" novalidate>
+        <label class="field">
+          <span class="field-label">Room ID</span>
+          <input
+            class="field-input"
+            type="text"
+            name="room_id"
+            id="room-id-input"
+            placeholder="Enter Room ID"
+            maxlength="64"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            required
+          />
+          <span class="field-hint join-room-status hidden" id="join-room-status" aria-live="polite"></span>
+        </label>
+
+        <label class="field" id="join-password-field" hidden>
+          <span class="field-label">Room Password</span>
+          <input
+            class="field-input"
+            type="text"
+            name="room_password"
+            id="join-password-input"
+            placeholder="Enter password"
+            maxlength="8"
+            autocomplete="off"
+          />
+          <span class="field-hint join-password-status hidden" id="join-password-status" aria-live="polite"></span>
+        </label>
+
+        <button class="submit-btn" type="submit" id="join-submit-btn" disabled>Join</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', path='js/join-room.js') }}"></script>
+{% endblock %}

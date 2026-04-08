@@ -1,0 +1,20 @@
+name: whoispy
+
+services:
+  app:
+    build: .
+    container_name: app
+    env_file:
+        - .env
+    environment:
+      - DEBUG=1
+    ports:
+        - '8000:8000'
+        - '5678:5678'
+    command: uv run fastapi dev --host 0.0.0.0
+    develop:
+      watch:
+        - action: sync
+          path: ./app
+          target: /src/app
+          initial_sync: true
